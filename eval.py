@@ -14,6 +14,7 @@ class myCallback(tf.keras.callbacks.Callback):
             print("\nVery low accuracy, something is wrong with the model!")
             self.model.stop_training = True
 
+
 class Eval:
     def euclidean_distance(a, b):
         return np.linalg.norm(a-b)

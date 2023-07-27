@@ -1,5 +1,24 @@
 import tensorflow as tf
+import os
+
 from keras.models import Model
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+
+from config import checkpoint_dir
+
+# config = tf.compat.v1.ConfigProto()
+# config.gpu_options.allow_growth = True
+# session = tf.compat.v1.Session(config=config)
+
+# from tensorflow.python.framework.config import set_memory_growth
+# tf.compat.v1.disable_v2_behavior()
+# gpus = tf.config.experimental.list_physical_devices('GPU')
+# if gpus:
+#     try:
+#         for gpu in gpus:
+#             set_memory_growth(gpu, True)
+#     except RuntimeError as e:
+#         print(e)
 
 class myCallback(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
@@ -37,7 +56,12 @@ class Train:
 
     def train_model(self, model: Model, pad_1_train, pad_2_train, pad_1_val, pad_2_val, y_train, y_val):
         
+        if not os.path.exists(checkpoint_dir):
+            os.makedirs(checkpoint_dir)
+        
         callbacks = myCallback()
+        # early_stopping = EarlyStopping(monitor='val_loss', patience=3)
+        model_checkpoint = ModelCheckpoint(checkpoint_dir, save_best_only=True, save_weights_only=False)
         
         history = model.fit(
             [pad_1_train, pad_2_train], 
@@ -45,7 +69,7 @@ class Train:
             epochs=20,
             batch_size=64,
             validation_data=([pad_1_val, pad_2_val], y_val),
-            callbacks=[callbacks]
+            callbacks=[callbacks, model_checkpoint]
         )
         
         model.save('final_model')
