@@ -4,3 +4,4 @@
 /_pycache_
 logs.txt
 /checkpoints
+final_model.h5
