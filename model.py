@@ -15,11 +15,11 @@ class SiameseModel:
         word_embedding_1 = Embedding(input_dim=vocab_size, weights=[embedding_matrix], output_dim=embedding_dim, input_length=max_len, trainable=False)(input_1)
         word_embedding_2 = Embedding(input_dim=vocab_size, weights=[embedding_matrix], output_dim=embedding_dim, input_length=max_len, trainable=False)(input_2)
         
-        lstm_1 = LSTM(80, return_sequences=True)(word_embedding_1)
-        lstm_1 = Dropout(0.2)(lstm_1)
+        lstm_1 = Bidirectional(LSTM(128, return_sequences=True))(word_embedding_1)
+        lstm_1 = Dropout(0.25)(lstm_1)
         
-        lstm_2 = LSTM(80, return_sequences=True)(word_embedding_2)
-        lstm_2 = Dropout(0.2)(lstm_2)
+        lstm_2 = Bidirectional(LSTM(128, return_sequences=True))(word_embedding_2)
+        lstm_2 = Dropout(0.25)(lstm_2)
         
         concat = concatenate([lstm_1, lstm_2])
         

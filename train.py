@@ -24,18 +24,18 @@ class Train:
         
         return history
         
-        
+    
     def split_train_val(self, data, split, y_values):
         padded_sequences_1, padded_sequences_2 = data
-        num_train = int(len(padded_sequences_1) * split * 0.25)
+        num_train = int(len(padded_sequences_1) * split)
         
         pad_1_train = padded_sequences_1[:num_train]
         pad_2_train = padded_sequences_2[:num_train]
         y_train = y_values[:num_train]
         
-        pad_1_val = padded_sequences_1[num_train:int(len(padded_sequences_1)/4)]
-        pad_2_val = padded_sequences_2[num_train:int(len(padded_sequences_1)/4)]
-        y_val = y_values[num_train:int(len(padded_sequences_1)/4)]
+        pad_1_val = padded_sequences_1[num_train:int(len(padded_sequences_1))]
+        pad_2_val = padded_sequences_2[num_train:int(len(padded_sequences_1))]
+        y_val = y_values[num_train:int(len(padded_sequences_1))]
         
         return pad_1_train, pad_2_train, pad_1_val, pad_2_val, y_train, y_val
         
@@ -53,7 +53,7 @@ class Train:
             [pad_1_train, pad_2_train], 
             y_train, 
             epochs=20,
-            batch_size=64,
+            batch_size=50,
             validation_data=([pad_1_val, pad_2_val], y_val),
             callbacks=[callbacks, model_checkpoint]
         )
