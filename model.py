@@ -17,8 +17,12 @@ class SiameseModel:
         
         lstm_1 = Bidirectional(LSTM(128, return_sequences=True))(word_embedding_1)
         lstm_1 = Dropout(0.25)(lstm_1)
+        lstm_1 = Bidirectional(LSTM(128, return_sequences=True))(lstm_1)
+        lstm_1 = Dropout(0.25)(lstm_1)
         
         lstm_2 = Bidirectional(LSTM(128, return_sequences=True))(word_embedding_2)
+        lstm_2 = Dropout(0.25)(lstm_2)
+        lstm_2 = Bidirectional(LSTM(128, return_sequences=True))(lstm_2)
         lstm_2 = Dropout(0.25)(lstm_2)
         
         concat = concatenate([lstm_1, lstm_2])
